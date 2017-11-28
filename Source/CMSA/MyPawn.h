@@ -27,8 +27,20 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
+	
 
 	UPROPERTY(EditAnywhere)
 		class UCameraComponent* Camera;
+
+	TArray<TArray<class ACasa*>> Matriz;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class ACasa> Casa;
 	
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class APersonagem> Personagem;
+
+	AActor*OtherActor;
+
+	bool StopGame;
 };

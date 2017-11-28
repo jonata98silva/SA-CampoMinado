@@ -12,7 +12,8 @@ APersonagem::APersonagem()
 
 
 	Sprite = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("Sprite"));
-	
+	RootComponent = Sprite;
+	Vida = 3;
 
 }
 

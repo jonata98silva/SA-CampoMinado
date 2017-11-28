@@ -34,15 +34,19 @@ public:
 	void Coletou();
 	void PoderPedra();
 
+	
+
 private:
 
 	UPROPERTY(EditAnywhere)
 		class UPaperFlipbookComponent* Sprite;
+	UPROPERTY(EditAnywhere)
+		class UPaperSprite* Personagem;
 
 	int Vida;
 	int Pedras;
 	bool PowerUp1;
-
+	
 	
 	
 };

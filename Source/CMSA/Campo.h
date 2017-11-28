@@ -23,15 +23,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-private:
 
-	UPROPERTY(EditAnywhere)
-		class USceneComponent* Root;
-
-	void OnTouchBegin(ETouchIndex::Type Type, UPrimitiveComponent* TouchedComponent);
-
-	TArray<TArray<class ACasa*>> Matriz;
-	
-	TSubclassOf<class ACasa> Casa;
 	
 };

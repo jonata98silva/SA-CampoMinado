@@ -15,6 +15,8 @@ class CMSA_API ACMSAGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 	
 	
-	
+public:
+
+	ACMSAGameModeBase();
 	
 };
