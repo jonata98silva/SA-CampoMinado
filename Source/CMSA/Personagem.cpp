@@ -54,6 +54,7 @@ void APersonagem::SetPedras(int Value)
 
 void APersonagem::Explodiu()
 {
+	UE_LOG(LogTemp, Warning, TEXT("PERSONAGEM VIDA %d"), Vida);
 	Vida--;
 }
 

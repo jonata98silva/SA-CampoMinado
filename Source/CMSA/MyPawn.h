@@ -40,7 +40,8 @@ private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class APersonagem> Personagem;
 
-	AActor*OtherActor;
+	UFUNCTION()
+		void CondVitoria();
 
 	bool StopGame;
 };

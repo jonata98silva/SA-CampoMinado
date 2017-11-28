@@ -60,6 +60,10 @@ void ACasa::AumentaIndex()
 }
 
 
+
+
+
+
 void ACasa::OnTouchBegin(ETouchIndex::Type Type, UPrimitiveComponent * TouchedComponent)
 {
 	UE_LOG(LogTemp, Warning, TEXT("TOCOU NA CARTA"));
@@ -67,12 +71,19 @@ void ACasa::OnTouchBegin(ETouchIndex::Type Type, UPrimitiveComponent * TouchedCo
 		UE_LOG(LogTemp, Warning, TEXT("If Index"));
 		UWorld* World = GetWorld();
 		if (World) {
+			
 			TArray<AActor*> Personagem;
 			UGameplayStatics::GetAllActorsOfClass(World, APersonagem::StaticClass(), Personagem);
-			UE_LOG(LogTemp, Warning, TEXT("TArray %d"), Personagem.Num());
+			//UE_LOG(LogTemp, Warning, TEXT("TArray %d"), Personagem.Num());
+			
 			if (Personagem.Num() >= 1) {
 				APersonagem* Persona = Cast<APersonagem>(Personagem[0]);
 				Persona->Explodiu();
+				if (Persona->GetVida() == 0) {
+					UE_LOG(LogTemp, Warning, TEXT("Vc Perdeu!!"))
+					GetWorld()->GetFirstPlayerController()->ConsoleCommand("Exit");
+				}
+				
 			}
 		}
 	}

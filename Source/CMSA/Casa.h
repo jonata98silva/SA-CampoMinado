@@ -31,6 +31,8 @@ public:
 	void AumentaIndex();
 	
 	
+	
+	
 private:
 
 	UPROPERTY(EditAnywhere)
@@ -48,6 +50,6 @@ private:
 
 	int Index;
 	int Boom;
-
-	AActor*OtherActor;
+	
+	
 };

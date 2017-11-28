@@ -52,10 +52,10 @@ void AMyPawn::BeginPlay()
 	Super::BeginPlay();
 
 	if (Casa) {
-		UE_LOG(LogTemp, Warning, TEXT("CASA = TRUE"));
+		//UE_LOG(LogTemp, Warning, TEXT("CASA = TRUE"));
 		UWorld* World = GetWorld();
 		if (World) {
-			UE_LOG(LogTemp, Warning, TEXT("Verificou o World e espalnou"));
+			//UE_LOG(LogTemp, Warning, TEXT("Verificou o World e espalnou"));
 			FActorSpawnParameters SpawParameters;
 			APersonagem* Player = World->SpawnActor<APersonagem>(Personagem, FVector(60.0f, 0.0f, 60.0f), FRotator::ZeroRotator, SpawParameters);
 			TArray<AActor*> Personagem;
@@ -63,30 +63,22 @@ void AMyPawn::BeginPlay()
 			UE_LOG(LogTemp, Warning, TEXT("TArray %d"), Personagem.Num());
 			if (Personagem.Num() >= 1) {
 				APersonagem* personagem = Cast<APersonagem>(Personagem[0]);
-				if (personagem->GetVida() > 0) {
-
-					for (int x = 0; x < 5; x++) {
-						UE_LOG(LogTemp, Warning, TEXT("Primeiro FOR"));
-						TArray<ACasa*> NewCol;
-
-						for (int y = 0; y < 11; y++) {
-							UE_LOG(LogTemp, Warning, TEXT("SEGUNDO FOR"));
-
-							FActorSpawnParameters SpawnParameters;
-							ACasa* NewCasa = World->SpawnActor<ACasa>(Casa, FVector(x * 46.0f, 0.0f, y * 45.0f), FRotator::ZeroRotator, SpawnParameters);
-							NewCol.Add(NewCasa);
-
-							int R = FMath::RandRange(0, 10);
-							if (R == 5) {
-								UE_LOG(LogTemp, Warning, TEXT("CriouBomba 1*"));
-								NewCasa->AumentaIndex();
-							}
-						}
-						Matriz.Add(NewCol);
+				UE_LOG(LogTemp, Warning, TEXT("VIDA %d"), personagem->GetVida());
+				for (int x = 0; x < 5; x++) {
+					UE_LOG(LogTemp, Warning, TEXT("Primeiro FOR"));
+					TArray<ACasa*> NewCol;
+					for (int y = 0; y < 11; y++) {
+						UE_LOG(LogTemp, Warning, TEXT("SEGUNDO FOR"));
+						FActorSpawnParameters SpawnParameters;
+						ACasa* NewCasa = World->SpawnActor<ACasa>(Casa, FVector(x * 46.0f, 0.0f, y * 45.0f), FRotator::ZeroRotator, SpawnParameters);
+						NewCol.Add(NewCasa);
+						int R = FMath::RandRange(0, 10);
+						if (R == 5) {
+							UE_LOG(LogTemp, Warning, TEXT("CriouBomba 1*"));
+							NewCasa->AumentaIndex();
+						}		
 					}
-				}
-				else {
-					GetWorld()->GetFirstPlayerController()->ConsoleCommand("Exit");
+					Matriz.Add(NewCol);
 				}
 			}
 		}	
@@ -97,6 +89,7 @@ void AMyPawn::BeginPlay()
 void AMyPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
 
 }
 
@@ -106,6 +99,12 @@ void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
+void AMyPawn::CondVitoria()
+{
+
+}
+
 
 
 
