@@ -64,31 +64,44 @@ void ACasa::AumentaIndex()
 
 
 
+
+
+
+
 void ACasa::OnTouchBegin(ETouchIndex::Type Type, UPrimitiveComponent * TouchedComponent)
 {
-	UE_LOG(LogTemp, Warning, TEXT("TOCOU NA CARTA"));
-	if (Index == 1) {
-		UE_LOG(LogTemp, Warning, TEXT("If Index"));
-		UWorld* World = GetWorld();
-		if (World) {
-			
-			TArray<AActor*> Personagem;
-			UGameplayStatics::GetAllActorsOfClass(World, APersonagem::StaticClass(), Personagem);
-			//UE_LOG(LogTemp, Warning, TEXT("TArray %d"), Personagem.Num());
-			
-			if (Personagem.Num() >= 1) {
-				APersonagem* Persona = Cast<APersonagem>(Personagem[0]);
+	UWorld* World = GetWorld();
+	if (World) {
+		TArray<AActor*> Personagem;
+		UGameplayStatics::GetAllActorsOfClass(World, APersonagem::StaticClass(), Personagem);
+		if (Personagem.Num() >= 1) {
+			APersonagem* Persona = Cast<APersonagem>(Personagem[0]);
+			Persona->SetActorLocation(GetActorLocation());
+			UE_LOG(LogTemp, Warning, TEXT("Posição %s"), *Persona->GetActorLocation().ToString());
+			if (Index == 1) {
 				Persona->Explodiu();
 				if (Persona->GetVida() == 0) {
-					UE_LOG(LogTemp, Warning, TEXT("Vc Perdeu!!"))
-					GetWorld()->GetFirstPlayerController()->ConsoleCommand("Exit");
+					//UE_LOG(LogTemp, Warning, TEXT("Vc Perdeu!!"));
+					Derrota = 1;
+					ReturnBool1(Derrota);					
 				}
-				
 			}
 		}
 	}
-	Destroy();
+	SetActorHiddenInGame(true);
 }
+
+void ACasa::ReturnBool1(int Value)
+{
+	if (Value == 1) {
+		UE_LOG(LogTemp, Warning, TEXT("Vc Perdeu!!"));
+		GetWorld()->GetFirstPlayerController()->ConsoleCommand("Exit");
+		
+		
+	}
+	
+}
+
 	
 		
 

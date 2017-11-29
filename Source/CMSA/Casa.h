@@ -50,6 +50,12 @@ private:
 
 	int Index;
 	int Boom;
+	int Explosao;
 	
+	int Derrota;
+	
+
+	UFUNCTION(BlueprintCallable, Category = "Minha")
+		void ReturnBool1(int Value);
 	
 };

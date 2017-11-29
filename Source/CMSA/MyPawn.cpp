@@ -52,34 +52,35 @@ void AMyPawn::BeginPlay()
 	Super::BeginPlay();
 
 	if (Casa) {
-		//UE_LOG(LogTemp, Warning, TEXT("CASA = TRUE"));
 		UWorld* World = GetWorld();
 		if (World) {
-			//UE_LOG(LogTemp, Warning, TEXT("Verificou o World e espalnou"));
 			FActorSpawnParameters SpawParameters;
-			APersonagem* Player = World->SpawnActor<APersonagem>(Personagem, FVector(60.0f, 0.0f, 60.0f), FRotator::ZeroRotator, SpawParameters);
+			APersonagem* Player = World->SpawnActor<APersonagem>(Personagem, FVector(0.0f, 0.0f, -45.0f), FRotator::ZeroRotator, SpawParameters);
 			TArray<AActor*> Personagem;
 			UGameplayStatics::GetAllActorsOfClass(World, APersonagem::StaticClass(), Personagem);
-			UE_LOG(LogTemp, Warning, TEXT("TArray %d"), Personagem.Num());
 			if (Personagem.Num() >= 1) {
 				APersonagem* personagem = Cast<APersonagem>(Personagem[0]);
-				UE_LOG(LogTemp, Warning, TEXT("VIDA %d"), personagem->GetVida());
-				for (int x = 0; x < 5; x++) {
-					UE_LOG(LogTemp, Warning, TEXT("Primeiro FOR"));
+				for (int x = 0; x < 8; x++) {
 					TArray<ACasa*> NewCol;
 					for (int y = 0; y < 11; y++) {
-						UE_LOG(LogTemp, Warning, TEXT("SEGUNDO FOR"));
 						FActorSpawnParameters SpawnParameters;
-						ACasa* NewCasa = World->SpawnActor<ACasa>(Casa, FVector(x * 46.0f, 0.0f, y * 45.0f), FRotator::ZeroRotator, SpawnParameters);
+						ACasa* NewCasa = World->SpawnActor<ACasa>(Casa, FVector(x * 53.0f, 0.0f, y * 50.0f), FRotator::ZeroRotator, SpawnParameters);
 						NewCol.Add(NewCasa);
-						int R = FMath::RandRange(0, 10);
-						if (R == 5) {
-							UE_LOG(LogTemp, Warning, TEXT("CriouBomba 1*"));
-							NewCasa->AumentaIndex();
-						}		
+						int R = FMath::RandRange(0, 5);						
+						if (R == 3) {
+							if (ContBombas < 5) {
+								UE_LOG(LogTemp, Warning, TEXT("ContBombas %d"), ContBombas);
+								UE_LOG(LogTemp, Warning, TEXT("CriouBomba 1*"));
+								NewCasa->AumentaIndex();
+							}
+							else {
+								UE_LOG(LogTemp, Warning, TEXT("Nao cria Bomba"));
+							}
+							ContBombas++;
+						}
 					}
 					Matriz.Add(NewCol);
-				}
+				}			
 			}
 		}	
 	}
@@ -102,8 +103,11 @@ void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AMyPawn::CondVitoria()
 {
-
 }
+
+
+
+
 
 
 

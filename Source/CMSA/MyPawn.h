@@ -43,5 +43,5 @@ private:
 	UFUNCTION()
 		void CondVitoria();
 
-	bool StopGame;
+	int ContBombas;
 };
