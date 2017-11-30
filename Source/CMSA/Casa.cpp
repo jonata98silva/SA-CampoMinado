@@ -32,6 +32,7 @@ void ACasa::BeginPlay()
 	if (ClosedCard != NULL) {
 		Sprite->SetSprite(ClosedCard);
 	}
+	Val = 1;
 	
 }
 
@@ -59,47 +60,75 @@ void ACasa::AumentaIndex()
 	Index++;
 }
 
+int ACasa::GetPertLinha()
+{
+	return PertLinha;
+}
 
-
-
-
-
-
-
-
+void ACasa::SetPertLinha(int Value)
+{
+	
+	LinhaP = Value;
+	UE_LOG(LogTemp, Warning, TEXT("LinhaP %d"), LinhaP);
+	//UE_LOG(LogTemp, Warning, TEXT("VALUE %d"), Value);
+	////PertLinha = Value;
+	//UE_LOG(LogTemp, Warning, TEXT("PertLinha Vamover %d"), PertLinha);
+	//Num = Value;
+	//Linha(Value);
+	
+}
 
 void ACasa::OnTouchBegin(ETouchIndex::Type Type, UPrimitiveComponent * TouchedComponent)
 {
-	UWorld* World = GetWorld();
-	if (World) {
-		TArray<AActor*> Personagem;
-		UGameplayStatics::GetAllActorsOfClass(World, APersonagem::StaticClass(), Personagem);
-		if (Personagem.Num() >= 1) {
-			APersonagem* Persona = Cast<APersonagem>(Personagem[0]);
-			Persona->SetActorLocation(GetActorLocation());
-			UE_LOG(LogTemp, Warning, TEXT("Posição %s"), *Persona->GetActorLocation().ToString());
-			if (Index == 1) {
-				Persona->Explodiu();
-				if (Persona->GetVida() == 0) {
-					//UE_LOG(LogTemp, Warning, TEXT("Vc Perdeu!!"));
-					Derrota = 1;
-					ReturnBool1(Derrota);					
+	
+	//UE_LOG(LogTemp, Warning, TEXT("NUM %d "), Num);
+	//UE_LOG(LogTemp, Warning, TEXT("PertLinha valor %d "), PertLinha);
+	//UE_LOG(LogTemp, Warning, TEXT("Val %d "), Val);
+	//if (Val - 1 == Num) {
+		UWorld* World = GetWorld();
+		if (World) {
+			TArray<AActor*> Personagem;
+			UGameplayStatics::GetAllActorsOfClass(World, APersonagem::StaticClass(), Personagem);
+			if (Personagem.Num() >= 1) {
+				APersonagem* Persona = Cast<APersonagem>(Personagem[0]);
+				Persona->SetActorLocation(GetActorLocation());
+				UE_LOG(LogTemp, Warning, TEXT("Posição %s"), *Persona->GetActorLocation().ToString());
+				if (Index == 1) {
+					Persona->Explodiu();
+					if (Persona->GetVida() == 0) {
+						Derrota = 1;
+						ReturnBool1(Derrota);
+					}
 				}
 			}
+			//Num++;
+			//Val++;
 		}
-	}
-	SetActorHiddenInGame(true);
+		
+		SetActorHiddenInGame(true);	
+	//}
+	//else {
+	//	UE_LOG(LogTemp, Warning, TEXT("NAO DEU"));
+	//}
+	
+	
+	
 }
 
 void ACasa::ReturnBool1(int Value)
 {
 	if (Value == 1) {
 		UE_LOG(LogTemp, Warning, TEXT("Vc Perdeu!!"));
-		GetWorld()->GetFirstPlayerController()->ConsoleCommand("Exit");
-		
-		
+		GetWorld()->GetFirstPlayerController()->ConsoleCommand("Exit");	
 	}
-	
+}
+
+void ACasa::Linha(int Value)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("VALUE2 %d"), Value);
+	//PertLinha = Value += 1;
+	//Val = Value += 1;
+	//UE_LOG(LogTemp, Warning, TEXT("PertLinha %d"), PertLinha);
 }
 
 	

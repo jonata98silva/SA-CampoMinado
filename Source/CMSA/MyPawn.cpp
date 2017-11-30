@@ -64,11 +64,14 @@ void AMyPawn::BeginPlay()
 					TArray<ACasa*> NewCol;
 					for (int y = 0; y < 11; y++) {
 						FActorSpawnParameters SpawnParameters;
-						ACasa* NewCasa = World->SpawnActor<ACasa>(Casa, FVector(x * 53.0f, 0.0f, y * 50.0f), FRotator::ZeroRotator, SpawnParameters);
+						ACasa* NewCasa = World->SpawnActor<ACasa>(Casa, FVector(x * 53.0f, 0.0f, y * 49.0f), FRotator::ZeroRotator, SpawnParameters);
 						NewCol.Add(NewCasa);
-						int R = FMath::RandRange(0, 5);						
+						NewCasa->SetPertLinha(y);
+						UE_LOG(LogTemp, Warning, TEXT("Y %d "), y);
+						UE_LOG(LogTemp, Warning, TEXT("lINHA %d"), NewCasa->GetPertLinha());
+						int R = FMath::RandRange(0, 10);						
 						if (R == 3) {
-							if (ContBombas < 5) {
+							if (ContBombas < 10) {
 								UE_LOG(LogTemp, Warning, TEXT("ContBombas %d"), ContBombas);
 								UE_LOG(LogTemp, Warning, TEXT("CriouBomba 1*"));
 								NewCasa->AumentaIndex();
@@ -80,6 +83,7 @@ void AMyPawn::BeginPlay()
 						}
 					}
 					Matriz.Add(NewCol);
+					
 				}			
 			}
 		}	

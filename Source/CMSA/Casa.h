@@ -29,8 +29,10 @@ public:
 	int GetIndex();
 	void SetIndex(int Value);
 	void AumentaIndex();
-	
-	
+	int GetPertLinha();
+	void SetPertLinha(int Value);
+	UFUNCTION()
+		void Linha(int Value);
 	
 	
 private:
@@ -53,9 +55,15 @@ private:
 	int Explosao;
 	
 	int Derrota;
-	
+	int PertLinha;
+	int Num;
+	int Val;
+
+	int LinhaP;
 
 	UFUNCTION(BlueprintCallable, Category = "Minha")
 		void ReturnBool1(int Value);
+
+	
 	
 };
