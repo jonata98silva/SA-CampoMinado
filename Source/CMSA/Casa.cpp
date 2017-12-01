@@ -78,6 +78,17 @@ void ACasa::SetPertLinha(int Value)
 	
 }
 
+int ACasa::GetLinhaX()
+{
+	return LinhaX;
+}
+
+void ACasa::SetLinhaX(int Value)
+{
+	LinhaX = Value;
+	UE_LOG(LogTemp, Warning, TEXT("LinhaX %d"), LinhaX);
+}
+
 void ACasa::OnTouchBegin(ETouchIndex::Type Type, UPrimitiveComponent * TouchedComponent)
 {
 	
@@ -85,34 +96,51 @@ void ACasa::OnTouchBegin(ETouchIndex::Type Type, UPrimitiveComponent * TouchedCo
 	//UE_LOG(LogTemp, Warning, TEXT("PertLinha valor %d "), PertLinha);
 	//UE_LOG(LogTemp, Warning, TEXT("Val %d "), Val);
 	//if (Val - 1 == Num) {
+	
 		UWorld* World = GetWorld();
 		if (World) {
 			TArray<AActor*> Personagem;
 			UGameplayStatics::GetAllActorsOfClass(World, APersonagem::StaticClass(), Personagem);
 			if (Personagem.Num() >= 1) {
 				APersonagem* Persona = Cast<APersonagem>(Personagem[0]);
-				Persona->SetActorLocation(GetActorLocation());
-				UE_LOG(LogTemp, Warning, TEXT("Posição %s"), *Persona->GetActorLocation().ToString());
+				if (Persona->GetPosiPersonagemY() == LinhaP  || Persona->GetPosiPersonagemY() == LinhaP - 1
+					|| LinhaP < Persona->GetPosiPersonagemY()) {
+					UE_LOG(LogTemp, Warning, TEXT("MOVE LINHAP"));
+					UE_LOG(LogTemp, Warning, TEXT("POSI Linha %d"), Persona->GetPosiPersonagemY());
+					Persona->SetPosiPersonagemY(LinhaP);
+					Persona->SetActorLocation(GetActorLocation());
+					int PosiAtual = Persona->GetPosiPersonagemX();
+					if (Persona->GetPosiPersonagemX() == LinhaX || Persona->GetPosiPersonagemX() == LinhaX - 1
+						|| LinhaX < Persona->GetPosiPersonagemX()){
+						UE_LOG(LogTemp, Warning, TEXT("MOVE COLUNAX"));
+						UE_LOG(LogTemp, Warning, TEXT("POSI COLUNA %d"), Persona->GetPosiPersonagemX());
+						Persona->SetActorLocation(GetActorLocation());
+						Persona->SetPosiPersonagemX(LinhaX);
+						Persona->SetPosiPersonagemY(LinhaP);
+					//UE_LOG(LogTemp, Warning, TEXT("Posição %s"), *Persona->GetActorLocation().ToString());
+					SetActorHiddenInGame(true);
+					}
+					//Persona->SetActorLocation(GetActorLocation());					
+				}
+				
 				if (Index == 1) {
 					Persona->Explodiu();
+					Index = 0;
 					if (Persona->GetVida() == 0) {
 						Derrota = 1;
 						ReturnBool1(Derrota);
 					}
 				}
+				
 			}
-			//Num++;
-			//Val++;
-		}
-		
-		SetActorHiddenInGame(true);	
-	//}
-	//else {
-	//	UE_LOG(LogTemp, Warning, TEXT("NAO DEU"));
-	//}
-	
-	
-	
+
+
+			//}
+			//else {
+			//	UE_LOG(LogTemp, Warning, TEXT("NAO DEU"));
+			//}
+
+	}	
 }
 
 void ACasa::ReturnBool1(int Value)
@@ -131,6 +159,11 @@ void ACasa::Linha(int Value)
 	//UE_LOG(LogTemp, Warning, TEXT("PertLinha %d"), PertLinha);
 }
 
+/*void AMyPawn::CondVitoria()
+{
+	if (LinhaX == 10)
+}
+*/
 	
 		
 

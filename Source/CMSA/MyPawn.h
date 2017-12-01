@@ -40,8 +40,5 @@ private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class APersonagem> Personagem;
 
-	UFUNCTION()
-		void CondVitoria();
-
 	int ContBombas;
 };

@@ -31,8 +31,13 @@ public:
 	void AumentaIndex();
 	int GetPertLinha();
 	void SetPertLinha(int Value);
+	int GetLinhaX();
+	void SetLinhaX(int Value);
 	UFUNCTION()
 		void Linha(int Value);
+
+	//UFUNCTION()
+	//	void CondVitoria();
 	
 	
 private:
@@ -60,6 +65,7 @@ private:
 	int Val;
 
 	int LinhaP;
+	int LinhaX;
 
 	UFUNCTION(BlueprintCallable, Category = "Minha")
 		void ReturnBool1(int Value);

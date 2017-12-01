@@ -52,13 +52,18 @@ void AMyPawn::BeginPlay()
 	Super::BeginPlay();
 
 	if (Casa) {
+		UE_LOG(LogTemp, Warning, TEXT("CASA TRUE"));
 		UWorld* World = GetWorld();
 		if (World) {
-			FActorSpawnParameters SpawParameters;
-			APersonagem* Player = World->SpawnActor<APersonagem>(Personagem, FVector(0.0f, 0.0f, -45.0f), FRotator::ZeroRotator, SpawParameters);
+			UE_LOG(LogTemp, Warning, TEXT("WORLD TRUE"));
+			FActorSpawnParameters SpawnParameters;
+			APersonagem* Persona = World->SpawnActor<APersonagem>(Personagem, FVector(0.0f, 0.0f, -45.0f), FRotator::ZeroRotator, SpawnParameters);
 			TArray<AActor*> Personagem;
 			UGameplayStatics::GetAllActorsOfClass(World, APersonagem::StaticClass(), Personagem);
+			UE_LOG(LogTemp, Warning, TEXT("TARRAY %d"), Personagem.Num());
+
 			if (Personagem.Num() >= 1) {
+				UE_LOG(LogTemp, Warning, TEXT("PERSONAGEM VETOR TRUE"));
 				APersonagem* personagem = Cast<APersonagem>(Personagem[0]);
 				for (int x = 0; x < 8; x++) {
 					TArray<ACasa*> NewCol;
@@ -67,7 +72,9 @@ void AMyPawn::BeginPlay()
 						ACasa* NewCasa = World->SpawnActor<ACasa>(Casa, FVector(x * 53.0f, 0.0f, y * 49.0f), FRotator::ZeroRotator, SpawnParameters);
 						NewCol.Add(NewCasa);
 						NewCasa->SetPertLinha(y);
+						NewCasa->SetLinhaX(x);
 						UE_LOG(LogTemp, Warning, TEXT("Y %d "), y);
+						UE_LOG(LogTemp, Warning, TEXT("X %d "), x);
 						UE_LOG(LogTemp, Warning, TEXT("lINHA %d"), NewCasa->GetPertLinha());
 						int R = FMath::RandRange(0, 10);						
 						if (R == 3) {
@@ -82,6 +89,7 @@ void AMyPawn::BeginPlay()
 							ContBombas++;
 						}
 					}
+					UE_LOG(LogTemp, Warning, TEXT("MATRIZ ADD TRUE"));
 					Matriz.Add(NewCol);
 					
 				}			
@@ -105,9 +113,7 @@ void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void AMyPawn::CondVitoria()
-{
-}
+
 
 
 
