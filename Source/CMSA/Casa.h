@@ -36,7 +36,12 @@ public:
 	void Liberar(bool Value);
 	bool Liberou;
 	void InitPerson(class APersonagem* Person);
+	int GetNumCasa();
+	void SetNumCasa(int Value);
+	int NumCasa;
 
+	
+		
 private:
 
 	TSubclassOf<class AActor> ExpEffect;
@@ -64,6 +69,7 @@ private:
 		void ReturnBool1();
 
 	class APersonagem* User;
+	
 
 	
 	

@@ -14,14 +14,13 @@ APersonagem::APersonagem()
 	Sprite = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("Sprite"));
 	RootComponent = Sprite;
 	Vida = 3;
-
+	Ganhou = false;
 }
 
 // Called when the game starts or when spawned
 void APersonagem::BeginPlay()
 {
 	Super::BeginPlay();
-	//PowerUp1 = false;
 	PosiPersonagemY = -1;
 	
 }
@@ -61,6 +60,16 @@ int APersonagem::GetPosiPersonagemY()
 void APersonagem::SetPosiPersonagemY(int Value)
 {
 	PosiPersonagemY = Value;
+}
+
+int APersonagem::GetGanhou()
+{
+	return Ganhou;
+}
+
+void APersonagem::SetGanhou(bool Value)
+{
+	Ganhou = Value;
 }
 
 void APersonagem::Explodiu()

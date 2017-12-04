@@ -70,15 +70,18 @@ void AMyPawn::BeginPlay()
 						NewCol.Add(NewCasa);
 						NewCasa->SetPertLinha(y);
 						NewCasa->SetLinhaX(x);
+						NewCasa->SetNumCasa(NewCasa->GetNumCasa() + CsaNum);
+						UE_LOG(LogTemp, Warning, TEXT("NUMERO DA CASA %d"), NewCasa->GetNumCasa());
 						NewCasa->InitPerson(Persona);
 
 						int R = FMath::RandRange(0, 10);
 
-						if (R == 3 && ContBombas < 10) {
+						if (R == 3 && ContBombas == 20) {
 							NewCasa->AumentaIndex();
 							ContBombas++;
 							NewCasa->SetActorHiddenInGame(true);
 						}
+						CsaNum++;
 					}
 					Matriz.Add(NewCol);
 				}
@@ -87,6 +90,7 @@ void AMyPawn::BeginPlay()
 		}
 	}
 }
+
 
 // Called every frame
 void AMyPawn::Tick(float DeltaTime)
@@ -103,6 +107,7 @@ void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+
 void AMyPawn::EsconderBombas()
 {
 	UWorld* World = GetWorld();
@@ -115,7 +120,5 @@ void AMyPawn::EsconderBombas()
 		}
 	}
 }
-
-
 
 

@@ -36,6 +36,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Life")
 		int Vida;
 
+	int GetGanhou();
+	void SetGanhou(bool Value);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ganhou")
+		bool Ganhou;
+
 private:
 
 	UPROPERTY(EditAnywhere)

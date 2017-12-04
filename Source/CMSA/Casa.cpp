@@ -23,6 +23,9 @@ ACasa::ACasa()
 	ConstructorHelpers::FObjectFinder<UClass> ActorQueroSpawnar(TEXT("Blueprint'/Game/Blueprint/ExplosionEffectBP.ExplosionEffectBP_C'"));
 	if (ActorQueroSpawnar.Succeeded()) { ExpEffect = Cast<UClass>(ActorQueroSpawnar.Object); }
 
+	ConstructorHelpers::FObjectFinder<UClass> SpawnarWin(TEXT("Blueprint'/Game/Blueprint/ExplosionEffectBP.ExplosionEffectBP_C'"));
+	if (SpawnarWin.Succeeded()) { ExpEffect = Cast<UClass>(SpawnarWin.Object); }
+
 
 
 }
@@ -34,6 +37,8 @@ void ACasa::BeginPlay()
 	if (ClosedCard != NULL) {
 		Sprite->SetSprite(ClosedCard);
 	}
+	
+
 }
 
 // Called every frame
@@ -84,7 +89,7 @@ void ACasa::OnTouchBegin(ETouchIndex::Type Type, UPrimitiveComponent * TouchedCo
 {
 	UWorld* World = GetWorld();
 	if (World) {
-
+		UE_LOG(LogTemp, Warning, TEXT("NUMCASA %d"), NumCasa);
 		if (Liberou) {
 			int PosX = User->GetPosiPersonagemX() - LinhaX;
 			int PosY = User->GetPosiPersonagemY() - LinhaP;
@@ -93,26 +98,35 @@ void ACasa::OnTouchBegin(ETouchIndex::Type Type, UPrimitiveComponent * TouchedCo
 				User->SetPosiPersonagemX(LinhaX);
 				User->SetActorLocation(GetActorLocation());
 				SetActorHiddenInGame(true);
-
+				
 				if (Index >= 1) {
 					FActorSpawnParameters SpawnParameters;
 					World->SpawnActor<ABomba>(ExpEffect, GetActorLocation(), GetActorRotation(), SpawnParameters);
 					User->Explodiu();
-					Index = 0;
-					//if (User->GetVida() <= 0) {
-					//	ReturnBool1();
-					//}
+					
+				}
+				if (NumCasa == 10 || NumCasa == 21 || NumCasa == 32 || NumCasa == 43 || NumCasa == 54 || NumCasa == 65 || NumCasa == 76 || NumCasa == 87) {
+					if (Index != 1) {
+						User->SetGanhou(true);
+						UE_LOG(LogTemp, Warning, TEXT("GANHOU!!!!"));
+						FActorSpawnParameters SpawnParameters;
+						World->SpawnActor<ABomba>(ExpEffect, GetActorLocation(), GetActorRotation(), SpawnParameters);
+					}
+					else {
+						User->Explodiu();
+					}
+					
 				}
 
 			}
 		}
+		
 	}
 }
 
 void ACasa::ReturnBool1()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Vc Perdeu!!"));
-	//GetWorld()->GetFirstPlayerController()->ConsoleCommand("Exit");	
 }
 
 void ACasa::Liberar(bool Value)
@@ -127,12 +141,14 @@ void ACasa::InitPerson(APersonagem* Person)
 	User = Person;
 }
 
-/*void AMyPawn::CondVitoria()
+int ACasa::GetNumCasa()
 {
-	if (LinhaX == 10)
+	return NumCasa;
 }
-*/
-	
-		
+
+void ACasa::SetNumCasa(int Value)
+{
+	NumCasa = Value;
+}
 
 

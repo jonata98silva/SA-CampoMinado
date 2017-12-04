@@ -27,6 +27,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void EsconderBombas();
+
+	
+
 	
 
 private:
@@ -46,5 +49,5 @@ private:
 	int ContBombas;
 	FTimerHandle Time;
 
-	
+	int CsaNum;
 };
