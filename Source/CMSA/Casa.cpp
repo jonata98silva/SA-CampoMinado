@@ -6,7 +6,8 @@
 #include "Personagem.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
-
+#include "Bomba.h"
+#include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 
 // Sets default values
 ACasa::ACasa()
@@ -17,9 +18,10 @@ ACasa::ACasa()
 
 	Sprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Sprite"));
 	Sprite->OnInputTouchBegin.AddDynamic(this, &ACasa::OnTouchBegin);
-	RootComponent = Sprite;
+	Sprite->SetupAttachment(RootComponent);
 	
-
+	ConstructorHelpers::FObjectFinder<UClass> ActorQueroSpawnar(TEXT("Blueprint'/Game/Blueprint/ExplosionEffectBP.ExplosionEffectBP_C'"));
+	if (ActorQueroSpawnar.Succeeded()) { ExpEffect = Cast<UClass>(ActorQueroSpawnar.Object); }
 
 
 
@@ -32,8 +34,6 @@ void ACasa::BeginPlay()
 	if (ClosedCard != NULL) {
 		Sprite->SetSprite(ClosedCard);
 	}
-	Val = 1;
-	
 }
 
 // Called every frame
@@ -67,15 +67,7 @@ int ACasa::GetPertLinha()
 
 void ACasa::SetPertLinha(int Value)
 {
-	
 	LinhaP = Value;
-	UE_LOG(LogTemp, Warning, TEXT("LinhaP %d"), LinhaP);
-	//UE_LOG(LogTemp, Warning, TEXT("VALUE %d"), Value);
-	////PertLinha = Value;
-	//UE_LOG(LogTemp, Warning, TEXT("PertLinha Vamover %d"), PertLinha);
-	//Num = Value;
-	//Linha(Value);
-	
 }
 
 int ACasa::GetLinhaX()
@@ -86,77 +78,53 @@ int ACasa::GetLinhaX()
 void ACasa::SetLinhaX(int Value)
 {
 	LinhaX = Value;
-	UE_LOG(LogTemp, Warning, TEXT("LinhaX %d"), LinhaX);
 }
 
 void ACasa::OnTouchBegin(ETouchIndex::Type Type, UPrimitiveComponent * TouchedComponent)
 {
-	
-	//UE_LOG(LogTemp, Warning, TEXT("NUM %d "), Num);
-	//UE_LOG(LogTemp, Warning, TEXT("PertLinha valor %d "), PertLinha);
-	//UE_LOG(LogTemp, Warning, TEXT("Val %d "), Val);
-	//if (Val - 1 == Num) {
-	
-		UWorld* World = GetWorld();
-		if (World) {
-			TArray<AActor*> Personagem;
-			UGameplayStatics::GetAllActorsOfClass(World, APersonagem::StaticClass(), Personagem);
-			if (Personagem.Num() >= 1) {
-				APersonagem* Persona = Cast<APersonagem>(Personagem[0]);
-				if (Persona->GetPosiPersonagemY() == LinhaP  || Persona->GetPosiPersonagemY() == LinhaP - 1
-					|| LinhaP < Persona->GetPosiPersonagemY()) {
-					UE_LOG(LogTemp, Warning, TEXT("MOVE LINHAP"));
-					UE_LOG(LogTemp, Warning, TEXT("POSI Linha %d"), Persona->GetPosiPersonagemY());
-					Persona->SetPosiPersonagemY(LinhaP);
-					Persona->SetActorLocation(GetActorLocation());
-					int PosiAtual = Persona->GetPosiPersonagemX();
-					if (Persona->GetPosiPersonagemX() == LinhaX || Persona->GetPosiPersonagemX() == LinhaX - 1
-						|| LinhaX < Persona->GetPosiPersonagemX()){
-						UE_LOG(LogTemp, Warning, TEXT("MOVE COLUNAX"));
-						UE_LOG(LogTemp, Warning, TEXT("POSI COLUNA %d"), Persona->GetPosiPersonagemX());
-						Persona->SetActorLocation(GetActorLocation());
-						Persona->SetPosiPersonagemX(LinhaX);
-						Persona->SetPosiPersonagemY(LinhaP);
-					//UE_LOG(LogTemp, Warning, TEXT("Posição %s"), *Persona->GetActorLocation().ToString());
-					SetActorHiddenInGame(true);
-					}
-					//Persona->SetActorLocation(GetActorLocation());					
-				}
-				
-				if (Index == 1) {
-					Persona->Explodiu();
+	UWorld* World = GetWorld();
+	if (World) {
+
+		if (Liberou) {
+			int PosX = User->GetPosiPersonagemX() - LinhaX;
+			int PosY = User->GetPosiPersonagemY() - LinhaP;
+			if (PosX >= -1 && PosX <= 1 && PosY >= -1 && PosY <= 1) {
+				User->SetPosiPersonagemY(LinhaP);
+				User->SetPosiPersonagemX(LinhaX);
+				User->SetActorLocation(GetActorLocation());
+				SetActorHiddenInGame(true);
+
+				if (Index >= 1) {
+					FActorSpawnParameters SpawnParameters;
+					World->SpawnActor<ABomba>(ExpEffect, GetActorLocation(), GetActorRotation(), SpawnParameters);
+					User->Explodiu();
 					Index = 0;
-					if (Persona->GetVida() == 0) {
-						Derrota = 1;
-						ReturnBool1(Derrota);
-					}
+					//if (User->GetVida() <= 0) {
+					//	ReturnBool1();
+					//}
 				}
-				
+
 			}
-
-
-			//}
-			//else {
-			//	UE_LOG(LogTemp, Warning, TEXT("NAO DEU"));
-			//}
-
-	}	
-}
-
-void ACasa::ReturnBool1(int Value)
-{
-	if (Value == 1) {
-		UE_LOG(LogTemp, Warning, TEXT("Vc Perdeu!!"));
-		GetWorld()->GetFirstPlayerController()->ConsoleCommand("Exit");	
+		}
 	}
 }
 
-void ACasa::Linha(int Value)
+void ACasa::ReturnBool1()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("VALUE2 %d"), Value);
-	//PertLinha = Value += 1;
-	//Val = Value += 1;
-	//UE_LOG(LogTemp, Warning, TEXT("PertLinha %d"), PertLinha);
+	UE_LOG(LogTemp, Warning, TEXT("Vc Perdeu!!"));
+	//GetWorld()->GetFirstPlayerController()->ConsoleCommand("Exit");	
+}
+
+void ACasa::Liberar(bool Value)
+{
+	if (Value) {
+		Liberou = true;
+	}
+}
+
+void ACasa::InitPerson(APersonagem* Person)
+{
+	User = Person;
 }
 
 /*void AMyPawn::CondVitoria()

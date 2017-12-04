@@ -2,13 +2,29 @@
 
 #include "Bomba.h"
 #include "Personagem.h"
+#include "PaperFlipbookComponent.h"
 
-void ABomba::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
-	if (OtherActor != nullptr && OtherActor->IsA(APersonagem::StaticClass())) {
-		APersonagem* Personagem = Cast<APersonagem>(OtherActor);
-		Personagem->Explodiu();
+
+ABomba::ABomba() {
+
+	PrimaryActorTick.bCanEverTick = true;
+
+	Flipbook = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("Sprite"));
+	Flipbook->SetLooping(false);
+	RootComponent = Flipbook;
+	
+}
+
+void ABomba::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
+
+void ABomba::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (!Flipbook->IsPlaying()) {
 		Destroy();
 	}
 }
-
-

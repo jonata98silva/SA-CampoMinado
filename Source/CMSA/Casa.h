@@ -33,14 +33,13 @@ public:
 	void SetPertLinha(int Value);
 	int GetLinhaX();
 	void SetLinhaX(int Value);
-	UFUNCTION()
-		void Linha(int Value);
+	void Liberar(bool Value);
+	bool Liberou;
+	void InitPerson(class APersonagem* Person);
 
-	//UFUNCTION()
-	//	void CondVitoria();
-	
-	
 private:
+
+	TSubclassOf<class AActor> ExpEffect;
 
 	UPROPERTY(EditAnywhere)
 		class UPaperSpriteComponent* Sprite;
@@ -56,19 +55,15 @@ private:
 	 void OnTouchBegin(ETouchIndex::Type Type, UPrimitiveComponent* TouchedComponent);
 
 	int Index;
-	int Boom;
 	int Explosao;
-	
-	int Derrota;
 	int PertLinha;
-	int Num;
-	int Val;
-
 	int LinhaP;
 	int LinhaX;
 
 	UFUNCTION(BlueprintCallable, Category = "Minha")
-		void ReturnBool1(int Value);
+		void ReturnBool1();
+
+	class APersonagem* User;
 
 	
 	

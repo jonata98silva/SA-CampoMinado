@@ -31,14 +31,10 @@ public:
 	void SetPosiPersonagemX(int Value);
 	int GetPosiPersonagemY();
 	void SetPosiPersonagemY(int Value);
-
-	//int GetPedras();
-	//void SetPedras(int Value);
 	void Explodiu();
-	//void Coletou();
-	//void PoderPedra();
-
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Life")
+		int Vida;
 
 private:
 
@@ -47,10 +43,8 @@ private:
 	UPROPERTY(EditAnywhere)
 		class UPaperSprite* Personagem;
 
-	int Vida;
-	//int Pedras;
-	//bool PowerUp1;
-	//Variavel pra localização do personagem tipo fvetor
+	
+
 	int PosiPersonagemY;
 	int PosiPersonagemX;
 	

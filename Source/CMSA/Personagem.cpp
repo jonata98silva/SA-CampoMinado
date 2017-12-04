@@ -22,6 +22,7 @@ void APersonagem::BeginPlay()
 {
 	Super::BeginPlay();
 	//PowerUp1 = false;
+	PosiPersonagemY = -1;
 	
 }
 
@@ -49,7 +50,7 @@ int APersonagem::GetPosiPersonagemX()
 
 void APersonagem::SetPosiPersonagemX(int Value)
 {
-	PosiPersonagemX += Value;
+	PosiPersonagemX = Value;
 }
 
 int APersonagem::GetPosiPersonagemY()
@@ -59,39 +60,11 @@ int APersonagem::GetPosiPersonagemY()
 
 void APersonagem::SetPosiPersonagemY(int Value)
 {
-	PosiPersonagemY += Value;
+	PosiPersonagemY = Value;
 }
 
-/*int APersonagem::GetPedras()
-{
-	return Pedras;
-}
-
-void APersonagem::SetPedras(int Value)
-{
-	Pedras = Value;
-}
-*/
 void APersonagem::Explodiu()
 {
 	UE_LOG(LogTemp, Warning, TEXT("PERSONAGEM EXPLODIU"));
 	Vida--;
 }
-/*
-void APersonagem::Coletou()
-{
-	if (Pedras < 5) {
-		Pedras++;
-	}
-	if (PowerUp1) {
-		if (Pedras < 7) {
-			Pedras++;
-		}
-	}
-}
-
-void APersonagem::PoderPedra()
-{
-	PowerUp1 = true;
-	Pedras = 7;
-*/

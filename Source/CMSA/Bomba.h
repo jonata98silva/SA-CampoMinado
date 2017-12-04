@@ -3,16 +3,31 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ItensColetaveis.h"
+#include "GameFramework/Actor.h"
 #include "Bomba.generated.h"
 
 UCLASS()
-class CMSA_API ABomba : public AItensColetaveis
+class CMSA_API ABomba : public AActor
 {
+
 	GENERATED_BODY()
+
+public:
+	// Sets default values for this actor's properties
+	ABomba();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 private:
 
-	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)override;
+	UPROPERTY(EditAnywhere)
+		class UPaperFlipbookComponent* Flipbook;
+
 
 };

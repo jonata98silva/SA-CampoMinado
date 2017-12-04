@@ -9,6 +9,7 @@
 #include "Casa.h"
 #include "Personagem.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "Runtime/Engine/Public/TimerManager.h"
 
 
 
@@ -52,49 +53,38 @@ void AMyPawn::BeginPlay()
 	Super::BeginPlay();
 
 	if (Casa) {
-		UE_LOG(LogTemp, Warning, TEXT("CASA TRUE"));
 		UWorld* World = GetWorld();
+
 		if (World) {
-			UE_LOG(LogTemp, Warning, TEXT("WORLD TRUE"));
 			FActorSpawnParameters SpawnParameters;
 			APersonagem* Persona = World->SpawnActor<APersonagem>(Personagem, FVector(0.0f, 0.0f, -45.0f), FRotator::ZeroRotator, SpawnParameters);
-			TArray<AActor*> Personagem;
-			UGameplayStatics::GetAllActorsOfClass(World, APersonagem::StaticClass(), Personagem);
-			UE_LOG(LogTemp, Warning, TEXT("TARRAY %d"), Personagem.Num());
+			
+			if (Persona) {
 
-			if (Personagem.Num() >= 1) {
-				UE_LOG(LogTemp, Warning, TEXT("PERSONAGEM VETOR TRUE"));
-				APersonagem* personagem = Cast<APersonagem>(Personagem[0]);
 				for (int x = 0; x < 8; x++) {
 					TArray<ACasa*> NewCol;
+
 					for (int y = 0; y < 11; y++) {
 						FActorSpawnParameters SpawnParameters;
 						ACasa* NewCasa = World->SpawnActor<ACasa>(Casa, FVector(x * 53.0f, 0.0f, y * 49.0f), FRotator::ZeroRotator, SpawnParameters);
 						NewCol.Add(NewCasa);
 						NewCasa->SetPertLinha(y);
 						NewCasa->SetLinhaX(x);
-						UE_LOG(LogTemp, Warning, TEXT("Y %d "), y);
-						UE_LOG(LogTemp, Warning, TEXT("X %d "), x);
-						UE_LOG(LogTemp, Warning, TEXT("lINHA %d"), NewCasa->GetPertLinha());
-						int R = FMath::RandRange(0, 10);						
-						if (R == 3) {
-							if (ContBombas < 10) {
-								UE_LOG(LogTemp, Warning, TEXT("ContBombas %d"), ContBombas);
-								UE_LOG(LogTemp, Warning, TEXT("CriouBomba 1*"));
-								NewCasa->AumentaIndex();
-							}
-							else {
-								UE_LOG(LogTemp, Warning, TEXT("Nao cria Bomba"));
-							}
+						NewCasa->InitPerson(Persona);
+
+						int R = FMath::RandRange(0, 10);
+
+						if (R == 3 && ContBombas < 10) {
+							NewCasa->AumentaIndex();
 							ContBombas++;
+							NewCasa->SetActorHiddenInGame(true);
 						}
 					}
-					UE_LOG(LogTemp, Warning, TEXT("MATRIZ ADD TRUE"));
 					Matriz.Add(NewCol);
-					
-				}			
+				}
+				GetWorldTimerManager().SetTimer(Time, this, &AMyPawn::EsconderBombas, 3.0f, false);		
 			}
-		}	
+		}
 	}
 }
 
@@ -113,11 +103,18 @@ void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-
-
-
-
-
+void AMyPawn::EsconderBombas()
+{
+	UWorld* World = GetWorld();
+	if (World) {
+		for (int i = 0; i < Matriz.Num(); i++) {
+			for (int j = 0; j < Matriz[i].Num(); j++) {
+				Matriz[i][j]->SetActorHiddenInGame(false);
+				Matriz[i][j]->Liberar(true);
+			}
+		}
+	}
+}
 
 
 
